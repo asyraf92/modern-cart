@@ -7,6 +7,10 @@
     position: fixed;
 }
 
+.container {
+    padding-bottom: 50px;
+}
+
 .cart-container {
     font-family: 'Poppins', sans-serif;
     position: fixed;
@@ -938,7 +942,44 @@
     }
 }
 
+/* Disabled Order Bump Styles */
+.order-bump-container.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.order-bump-container.disabled::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+    cursor: not-allowed;
+}
+
+.order-bump-container.disabled .order-bump-checkbox {
+    cursor: not-allowed;
+}
+
+.order-bump-container.disabled .order-bump-input {
+    cursor: not-allowed;
+}
+
+/* Optional: Add a lock icon */
+.order-bump-container.disabled .order-bump-badge::after {
+    content: ' 🔒';
+    margin-left: 5px;
+}
+
 @media (max-width: 480px) {
+    .container {
+        padding-bottom: 0;
+    }
+
     .cart-container {
         padding: 15px;
     }
