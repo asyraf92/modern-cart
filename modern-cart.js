@@ -560,6 +560,51 @@ function checkBumpConditions(bumpConfig) {
  * Update visibility for a single order bump
  * @param {number} bumpIndex - Index of the order bump in window.cartConfig.orderBumps
  */
+// function updateBumpVisibility(bumpIndex) {
+//     const bumpConfig = window.cartConfig.orderBumps[bumpIndex];
+    
+//     if (!bumpConfig || !bumpConfig.enabled) {
+//         return;
+//     }
+    
+//     const bumpContainer = document.querySelector(`.order-bump-container[data-bump-index="${bumpIndex}"]`);
+    
+//     if (!bumpContainer) {
+//         return;
+//     }
+    
+//     // Get detailed condition status (NEW)
+//     const conditionStatus = checkBumpConditionsDetailed(bumpConfig);
+//     const shouldShow = conditionStatus.met;
+    
+//     // Update notification (NEW)
+//     updateBumpNotification(bumpIndex, conditionStatus);
+    
+//     if (shouldShow) {
+//         bumpContainer.style.display = 'block';
+        
+//         if (window.cartConfig.debugMode) {
+//             console.log(`✅ Order bump ${bumpIndex} shown (conditions met)`);
+//         }
+//     } else {
+//         bumpContainer.style.display = 'none';
+        
+//         // Auto uncheck kalau conditions tidak meet
+//         const checkbox = bumpContainer.querySelector('.order-bump-input');
+//         if (checkbox && checkbox.checked) {
+//             checkbox.checked = false;
+//             checkbox.dispatchEvent(new Event('change'));
+            
+//             if (window.cartConfig.debugMode) {
+//                 console.log(`❌ Order bump ${bumpIndex} auto-unchecked (conditions not met)`);
+//             }
+//         }
+        
+//         if (window.cartConfig.debugMode) {
+//             console.log(`🚫 Order bump ${bumpIndex} hidden (conditions not met)`);
+//         }
+//     }
+// }
 function updateBumpVisibility(bumpIndex) {
     const bumpConfig = window.cartConfig.orderBumps[bumpIndex];
     
@@ -573,35 +618,55 @@ function updateBumpVisibility(bumpIndex) {
         return;
     }
     
-    // Get detailed condition status (NEW)
+    // Get detailed condition status
     const conditionStatus = checkBumpConditionsDetailed(bumpConfig);
     const shouldShow = conditionStatus.met;
+    const hasStarted = conditionStatus.hasStarted;
     
-    // Update notification (NEW)
+    // Update notification
     updateBumpNotification(bumpIndex, conditionStatus);
     
-    if (shouldShow) {
+    // Show bump bila user dah mula order
+    if (hasStarted || shouldShow) {
         bumpContainer.style.display = 'block';
         
-        if (window.cartConfig.debugMode) {
-            console.log(`✅ Order bump ${bumpIndex} shown (conditions met)`);
-        }
-    } else {
-        bumpContainer.style.display = 'none';
-        
-        // Auto uncheck kalau conditions tidak meet
+        // ✅ Disable/Enable bump based on conditions
         const checkbox = bumpContainer.querySelector('.order-bump-input');
-        if (checkbox && checkbox.checked) {
-            checkbox.checked = false;
-            checkbox.dispatchEvent(new Event('change'));
+        const quantityWrapper = bumpContainer.querySelector('.order-bump-quantity-wrapper');
+        
+        if (!shouldShow) {
+            // ❌ Conditions not met - DISABLE bump
+            bumpContainer.classList.add('disabled');
+            if (checkbox) {
+                checkbox.disabled = true;
+                checkbox.checked = false;
+            }
+            
+            // Hide quantity wrapper jika ada
+            if (quantityWrapper) {
+                quantityWrapper.style.display = 'none';
+            }
             
             if (window.cartConfig.debugMode) {
-                console.log(`❌ Order bump ${bumpIndex} auto-unchecked (conditions not met)`);
+                console.log(`🔒 Order bump ${bumpIndex} shown but DISABLED (conditions not met)`);
+            }
+        } else {
+            // ✅ Conditions met - ENABLE bump
+            bumpContainer.classList.remove('disabled');
+            if (checkbox) {
+                checkbox.disabled = false;
+            }
+            
+            if (window.cartConfig.debugMode) {
+                console.log(`✅ Order bump ${bumpIndex} ENABLED (conditions met)`);
             }
         }
+    } else {
+        // 🙈 User belum mula order - HIDE bump sepenuhnya
+        bumpContainer.style.display = 'none';
         
         if (window.cartConfig.debugMode) {
-            console.log(`🚫 Order bump ${bumpIndex} hidden (conditions not met)`);
+            console.log(`🙈 Order bump ${bumpIndex} hidden (user hasn't started ordering)`);
         }
     }
 }
@@ -697,6 +762,19 @@ function setupOrderBumpListeners() {
                 console.log(`Order bump ${index} total: ${formatPrice(total)}`);
             }
         }
+
+        function updateQuantityButtons() {
+            const currentValue = parseInt(qtyInput.value) || 1;
+            if (minusBtn) {
+                minusBtn.disabled = (currentValue <= bumpConfig.minQuantity);
+            }
+            if (plusBtn) {
+                plusBtn.disabled = (currentValue >= bumpConfig.maxQuantity);
+            }
+        }
+
+        // Set initial button states
+        updateQuantityButtons();
         
         checkbox.addEventListener('change', function() {
             if (this.checked) {
@@ -733,6 +811,20 @@ function setupOrderBumpListeners() {
             }
         });
         
+        // if (minusBtn) {
+        //     minusBtn.addEventListener('click', function(e) {
+        //         e.preventDefault();
+        //         let currentValue = parseInt(qtyInput.value) || 1;
+        //         if (currentValue > bumpConfig.minQuantity) {
+        //             qtyInput.value = currentValue - 1;
+        //             updateBumpTotal();
+        //         }
+                
+        //         minusBtn.disabled = (parseInt(qtyInput.value) <= bumpConfig.minQuantity);
+        //     });
+            
+        //     minusBtn.disabled = (parseInt(qtyInput.value) <= bumpConfig.minQuantity);
+        // }
         if (minusBtn) {
             minusBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -740,29 +832,51 @@ function setupOrderBumpListeners() {
                 if (currentValue > bumpConfig.minQuantity) {
                     qtyInput.value = currentValue - 1;
                     updateBumpTotal();
+                    updateQuantityButtons();
                 }
-                
-                minusBtn.disabled = (parseInt(qtyInput.value) <= bumpConfig.minQuantity);
             });
-            
-            minusBtn.disabled = (parseInt(qtyInput.value) <= bumpConfig.minQuantity);
         }
         
+        // if (plusBtn) {
+        //     plusBtn.addEventListener('click', function(e) {
+        //         e.preventDefault();
+        //         let currentValue = parseInt(qtyInput.value) || 1;
+                
+        //         if (currentValue < bumpConfig.maxQuantity) {
+        //             qtyInput.value = currentValue + 1;
+        //             updateBumpTotal();
+        //             if (minusBtn) minusBtn.disabled = false;
+        //         }
+                
+        //         plusBtn.disabled = (parseInt(qtyInput.value) >= bumpConfig.maxQuantity);
+        //     });
+        // }
         if (plusBtn) {
             plusBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 let currentValue = parseInt(qtyInput.value) || 1;
-                
                 if (currentValue < bumpConfig.maxQuantity) {
                     qtyInput.value = currentValue + 1;
                     updateBumpTotal();
-                    if (minusBtn) minusBtn.disabled = false;
+                    updateQuantityButtons();
                 }
-                
-                plusBtn.disabled = (parseInt(qtyInput.value) >= bumpConfig.maxQuantity);
             });
         }
         
+        // if (qtyInput) {
+        //     qtyInput.addEventListener('change', function() {
+        //         let value = parseInt(this.value) || 1;
+                
+        //         if (value < bumpConfig.minQuantity) value = bumpConfig.minQuantity;
+        //         if (value > bumpConfig.maxQuantity) value = bumpConfig.maxQuantity;
+                
+        //         this.value = value;
+        //         updateBumpTotal();
+                
+        //         if (minusBtn) minusBtn.disabled = (value <= bumpConfig.minQuantity);
+        //         if (plusBtn) plusBtn.disabled = (value >= bumpConfig.maxQuantity);
+        //     });
+        // }
         if (qtyInput) {
             qtyInput.addEventListener('change', function() {
                 let value = parseInt(this.value) || 1;
@@ -772,9 +886,7 @@ function setupOrderBumpListeners() {
                 
                 this.value = value;
                 updateBumpTotal();
-                
-                if (minusBtn) minusBtn.disabled = (value <= bumpConfig.minQuantity);
-                if (plusBtn) plusBtn.disabled = (value >= bumpConfig.maxQuantity);
+                updateQuantityButtons();
             });
         }
     });
