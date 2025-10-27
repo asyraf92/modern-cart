@@ -921,18 +921,20 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </label>
                         <div class="order-bump-quantity-wrapper" id="${bumpId}-quantity-wrapper" style="display: none;">
-                            <div class="quantity-label">${processedConfig.quantityLabel}</div>
-                            <div class="quantity-selector">
-                                <button type="button" class="qty-btn qty-minus" data-bump-index="${index}">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                                <input type="number" class="qty-input" id="${bumpId}-qty-input" value="${processedConfig.defaultQuantity}" min="${processedConfig.minQuantity}" max="${processedConfig.maxQuantity}" readonly data-bump-index="${index}">
-                                <button type="button" class="qty-btn qty-plus" data-bump-index="${index}">
-                                    <i class="fa fa-plus"></i>
-                                </button>
+                            <div class="bump-quantity-left">
+                                <div class="quantity-label">${processedConfig.quantityLabel}</div>
+                                <div class="quantity-selector">
+                                    <button type="button" class="qty-btn qty-minus" data-bump-index="${index}">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <input type="number" class="qty-input" id="${bumpId}-qty-input" value="${processedConfig.defaultQuantity}" min="${processedConfig.minQuantity}" max="${processedConfig.maxQuantity}" readonly data-bump-index="${index}">
+                                    <button type="button" class="qty-btn qty-plus" data-bump-index="${index}">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="quantity-total">
-                                +<span class="bump-total-price" id="${bumpId}-total-price">${formatPrice(processedConfig.discountedPrice)}</span>
+                                <span class="bump-total-price" id="${bumpId}-total-price">${formatPrice(processedConfig.discountedPrice)}</span>
                             </div>
                         </div>
                     </div>
@@ -951,6 +953,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('🎁 Order Bumps loaded:', window.cartConfig.orderBumps.filter(b => b.enabled).length, 'active');
         }
     }
-
 });
+
 })();
