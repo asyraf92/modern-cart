@@ -676,9 +676,8 @@
 
 .bump-price-new {
     color: #E34C03;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1.6rem;
-    margin: 0 4px;
 }
 
 .bump-save {
@@ -688,8 +687,7 @@
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 1.1rem;
-    font-weight: 600;
-    margin-left: 4px;
+    font-weight: 500;
 }
 
 .order-bump-quantity-wrapper {
@@ -701,6 +699,12 @@
     gap: 15px;
     flex-wrap: wrap;
     animation: slideDown 0.3s ease;
+    justify-content: space-between;
+}
+
+.bump-quantity-left {
+    display: flex;
+    flex-direction: row;
 }
 
 /* Order Bump Badge */
@@ -754,7 +758,7 @@
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
 }
 
 .qty-btn {
@@ -811,14 +815,14 @@
 
 .quantity-total {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #333;
     margin-left: auto;
 }
 
 .bump-total-price {
     color: #E34C03;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
 }
 
 @keyframes bounceIn {
@@ -852,7 +856,7 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(180deg, #E34C03 0%, #F37331 100%);
+    background: #E34C03;
 }
 
 /* Notification content layout */
@@ -868,7 +872,7 @@
     width: 24px;
     height: 24px;
     min-width: 24px;
-    background: linear-gradient(135deg, #E34C03 0%, #F37331 100%);
+    background:#E34C03;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -876,7 +880,6 @@
     color: white;
     font-size: 1.4rem;
     margin-top: 2px;
-    animation: pulse 2s ease-in-out infinite;
 }
 
 /* Text container */
@@ -917,7 +920,6 @@
 
 .order-bump-notification.success .order-bump-notification-icon {
     background: linear-gradient(135deg, #04B395 0%, #03A085 100%);
-    animation: none; /* Remove pulse on success */
 }
 
 .order-bump-notification.success .order-bump-notification-title {
@@ -933,15 +935,6 @@
     to {
         opacity: 1;
         transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% { 
-        transform: scale(1); 
-    }
-    50% { 
-        transform: scale(1.1); 
     }
 }
 
@@ -1013,13 +1006,11 @@
     
     .order-bump-quantity-wrapper {
         flex-direction: column;
-        align-items: flex-start;
         gap: 10px;
     }
     
     .quantity-total {
         margin-left: 0;
-        width: 100%;
     }
 
     .order-bump-notification {
