@@ -1,3 +1,6 @@
+(function() {
+    'use strict';
+
 // ========== INJECT CART HTML STRUCTURE ==========
 function injectCartHTML() {
     const cartHTML = `
@@ -948,4 +951,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('🎁 Order Bumps loaded:', window.cartConfig.orderBumps.filter(b => b.enabled).length, 'active');
         }
     }
+
 });
+})();
