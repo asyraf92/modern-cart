@@ -919,8 +919,8 @@
     color: #00846C;
 }
 
-.order-bump-notification-message.success strong {
-    color: #00846C!important;
+.order-bump-notification.success .order-bump-notification-message strong {
+    color: #00846C;
 }
 
 /* Animations */
