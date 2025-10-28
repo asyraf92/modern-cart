@@ -920,7 +920,7 @@
 }
 
 .order-bump-notification-message.success strong {
-    color: #00846C;
+    color: #00846C!important;
 }
 
 /* Animations */
