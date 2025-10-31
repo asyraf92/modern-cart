@@ -267,20 +267,16 @@
     display: none;
 }
 
-.table.table-condensed.purchase_details:not(.table-hover) tbody tr:nth-child(2) {
+.table.table-condensed.purchase_details:not(.table-hover) tbody tr {
     background: #fff5f2;
-}
-
-/* .table.table-condensed.purchase_details:not(.table-hover) tbody tr:nth-child(2) td {
-    padding: 12px 5px;
-    color: #e34c03;
 }
 
 .table.table-condensed.purchase_details:not(.table-hover) tbody tr:last-child td {
     padding: 0 5px 12px;
     color: #999;
-} */
-.table.table-condensed.purchase_details:not(.table-hover) tbody tr:last-child td {
+}
+
+.table.table-condensed.purchase_details:not(.table-hover) tbody tr:has(.total-amount) td {
     padding: 12px 5px;
     color: #e34c03;
 }
