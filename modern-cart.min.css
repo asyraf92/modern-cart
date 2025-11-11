@@ -173,33 +173,17 @@
     background: #fff;
 }
 
-/* .payment_method_label input:checked+.radio-custom,
+.payment_method_label input:checked+.radio-custom,
 .bank_name input:checked+.radio-custom,
 .radio-inline input:checked+.radio-custom,
 .radio input:checked+.radio-custom {
     border-color: var(--secondary-color);
-} */
-.payment_method_label input:checked ~ .radio-custom,
-.bank_name input:checked ~ .radio-custom,
-.radio-inline input:checked ~ .radio-custom,
-.radio input:checked ~ .radio-custom {
-    border-color: var(--secondary-color);
 }
 
-/* .payment_method_label input:checked+.radio-custom::after,
+.payment_method_label input:checked+.radio-custom::after,
 .bank_name input:checked+.radio-custom::after,
 .radio-inline input:checked+.radio-custom::after,
 .radio input:checked+.radio-custom::after {
-    content: '';
-    width: 10px;
-    height: 10px;
-    background: var(--secondary-color);
-    border-radius: 50px;
-} */
-.payment_method_label input:checked ~ .radio-custom::after,
-.bank_name input:checked ~ .radio-custom::after,
-.radio-inline input:checked ~ .radio-custom::after,
-.radio input:checked ~ .radio-custom::after {
     content: '';
     width: 10px;
     height: 10px;
