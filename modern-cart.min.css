@@ -324,9 +324,9 @@
     font-size: 14px;
 }
 
-.table.table-condensed.purchase_details:not(.table-hover) {
+/* .table.table-condensed.purchase_details:not(.table-hover) {
     margin-top: -15px!important;
-}
+} */
 
 .table.table-condensed.purchase_details:not(.table-hover) tbody tr:first-child {
     display: none;
