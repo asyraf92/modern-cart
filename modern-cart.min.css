@@ -810,9 +810,10 @@
 /* Bump offer image */
 .order-bump-image {
     width: 120px;
+    height: fit-content;
     flex-shrink: 0;
     margin-right: 15px;
-    border-radius: 8px;
+    border-radius: 5px;
     overflow: hidden;
 }
 
@@ -824,9 +825,14 @@
 
 .order-bump-content {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
     gap: 15px;
     margin-top: -13px;
+}
+
+.bump-content-top {
+    display: flex;
+    flex-direction: row;
 }
 
 .notification-close-btn {
@@ -1164,6 +1170,16 @@
 
     .order-bump-container {
         padding: 15px;
+    }
+
+    .bump-content-top {
+        flex-direction: column;
+    }
+
+    .order-bump-image {
+        margin-bottom: 15px;
+        margin-right: 0;
+        width: auto;
     }
     
     .quantity-total {
